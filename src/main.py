@@ -24,12 +24,23 @@ def main():
 
     dt = 0
 
+    collision_detected = False
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
 
         updatable.update(dt)
+
+        if len(pygame.sprite.Group(asteroids).sprites()) > 0:
+            for i in range(0, len(pygame.sprite.Group(asteroids).sprites())):
+                if player.checkCollision(pygame.sprite.Group(asteroids).sprites()[i]):
+                    collision_detected = True
+                    break
+        
+        if collision_detected:
+            return
 
         screen.fill("black")
 
