@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -38,30 +39,14 @@ def main():
 
         player.timer -= dt
 
-        if len(pygame.sprite.Group(asteroids).sprites()) > 0:
-            asteroids_sprites = pygame.sprite.Group(asteroids).sprites()
-
-            for i in range(0, len(asteroids_sprites)):
-                asteroid_exploded = False
-                shots_sprites = pygame.sprite.Group(shots).sprites()
-
-                if len(shots_sprites) > 0:
-                    for j in range(0, len(shots_sprites)):
-                        if asteroids_sprites[i].checkCollision(shots_sprites[j]):
-                            shots_sprites[j].kill()
-                            asteroids_sprites[i].kill()
-                            asteroid_exploded = True
-                            break
-
-                if asteroid_exploded:
-                    continue
-
-                if player.checkCollision(asteroids_sprites[i]):
-                    collision_detected = True
-                    break
-
-        if collision_detected:
-            return
+        for asteroid in asteroids:
+            if asteroid.checkCollision(player):
+                sys.exit()
+        
+            for shot in shots:
+                if asteroid.checkCollision(shot):
+                    shot.kill()
+                    asteroid.split()
 
         screen.fill("black")
 
