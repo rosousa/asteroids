@@ -36,6 +36,8 @@ def main():
 
         updatable.update(dt)
 
+        player.timer -= dt
+
         if len(pygame.sprite.Group(asteroids).sprites()) > 0:
             for i in range(0, len(pygame.sprite.Group(asteroids).sprites())):
                 if player.checkCollision(pygame.sprite.Group(asteroids).sprites()[i]):
